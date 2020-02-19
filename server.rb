@@ -121,9 +121,9 @@ end
 
 get '/ab' do
   user_id = params['userId'] || USERS.sample
-  variation_name = $vwo_client_instance.activate(AbCampaignData['campaign_key'], user_id, { custom_variables: AbCampaignData['custom_variables'] })
+  variation_name = $vwo_client_instance_user_storage.activate(AbCampaignData['campaign_key'], user_id, { custom_variables: AbCampaignData['custom_variables'] })
   is_part_of_campaign = !variation_name.nil?
-  $vwo_client_instance.track(AbCampaignData['campaign_key'], user_id, AbCampaignData['campaign_goal_identifier'], { revenue_value: AbCampaignData['revenue_value'] })
+  $vwo_client_instance_user_storage.track(AbCampaignData['campaign_key'], user_id, AbCampaignData['campaign_goal_identifier'], { revenue_value: AbCampaignData['revenue_value'] })
   
   erb :ab, locals: {
     user_id: user_id,
@@ -133,7 +133,7 @@ get '/ab' do
     ab_campaign_key: AbCampaignData['campaign_key'],
     ab_campaign_goal_identifier: AbCampaignData['campaign_goal_identifier'],
     custom_variables: JSON.generate(AbCampaignData['custom_variables']),
-    settings_file: $vwo_client_instance.get_settings
+    settings_file: $vwo_client_instance_user_storage.get_settings
   }
 end
 

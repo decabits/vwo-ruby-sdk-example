@@ -1,5 +1,5 @@
 AbCampaignData = {
-  'campaign_key' => 'sasasa1',
+  'campaign_key' => 'phpab3',
   'campaign_goal_identifier' => 'custom',
   'user_id' => nil,
   'revenue_value' => 10,
