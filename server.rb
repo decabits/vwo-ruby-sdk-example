@@ -121,10 +121,10 @@ end
 
 get '/ab' do
   user_id = params['userId'] || USERS.sample
-  variation_name = $vwo_client_instance_user_storage.activate(AbCampaignData['campaign_key'], user_id, { custom_variables: AbCampaignData['custom_variables'] })
+  variation_name = $vwo_client_instance_user_storage.activate(AbCampaignData['campaign_key'], user_id, AbCampaignData['options'])
   is_part_of_campaign = !variation_name.nil?
   $vwo_client_instance_user_storage.track(AbCampaignData['campaign_key'], user_id, AbCampaignData['campaign_goal_identifier'], { revenue_value: AbCampaignData['revenue_value'] })
-  
+
   erb :ab, locals: {
     user_id: user_id,
     campaign_type: "Visual-AB",
@@ -139,14 +139,14 @@ end
 
 get '/feature-rollout' do
   user_id = params['userId'] || FeatureRolloutData['user_id'] || USERS.sample
-  is_user_part_of_feature_rollout_campaign = $vwo_client_instance.feature_enabled?(FeatureRolloutData['campaign_key'], user_id, { custom_variables: FeatureRolloutData['custom_variables'] })
-  
+  is_user_part_of_feature_rollout_campaign = $vwo_client_instance.feature_enabled?(FeatureRolloutData['campaign_key'], user_id, FeatureRolloutData['options'])
+
   erb :feature_rollout, locals: {
     user_id: user_id,
     campaign_type: 'Feature-rollout',
     is_user_part_of_feature_rollout_campaign: is_user_part_of_feature_rollout_campaign,
     feature_rollout_campaign_key: FeatureRolloutData['campaign_key'],
-    custom_variables: JSON.generate(FeatureRolloutData['custom_variables']),
+    custom_variables: JSON.generate(FeatureRolloutData['options']['custom_variables']),
     settings_file: $vwo_client_instance.get_settings
   }
 end
@@ -158,14 +158,13 @@ get '/feature-test' do
     FeatureTestData['campaign_key'],
     user_id,
     FeatureTestData['campaign_goal_identifier'],
-    revenue_value=FeatureTestData['revenue_value'],
-    custom_variables=FeatureTestData['custom_variables']
+    options=FeatureTestData['options'],
   )
-  string_variable = $vwo_client_instance.get_feature_variable_value(FeatureTestData['campaign_key'], FeatureTestData['string_variable_key'], user_id, { custom_variables: FeatureTestData['custom_variables'] })
-  integer_variable = $vwo_client_instance.get_feature_variable_value(FeatureTestData['campaign_key'], FeatureTestData['integer_variable_key'], user_id, { custom_variables: FeatureTestData['custom_variables'] })
-  boolean_variable = $vwo_client_instance.get_feature_variable_value(FeatureTestData['campaign_key'], FeatureTestData['boolean_variable_key'], user_id, { custom_variables: FeatureTestData['custom_variables'] })
-  double_variable = $vwo_client_instance.get_feature_variable_value(FeatureTestData['campaign_key'], FeatureTestData['double_variable_key'], user_id, { custom_variables: FeatureTestData['custom_variables'] })
-  
+  string_variable = $vwo_client_instance.get_feature_variable_value(FeatureTestData['campaign_key'], FeatureTestData['string_variable_key'], user_id, options)
+  integer_variable = $vwo_client_instance.get_feature_variable_value(FeatureTestData['campaign_key'], FeatureTestData['integer_variable_key'], user_id, options)
+  boolean_variable = $vwo_client_instance.get_feature_variable_value(FeatureTestData['campaign_key'], FeatureTestData['boolean_variable_key'], user_id, options)
+  double_variable = $vwo_client_instance.get_feature_variable_value(FeatureTestData['campaign_key'], FeatureTestData['double_variable_key'], user_id, options)
+
   erb :feature_test, locals: {
     user_id: user_id,
     campaign_type: "Feature-test",
@@ -176,7 +175,7 @@ get '/feature-test' do
     integer_variable: integer_variable,
     boolean_variable: boolean_variable,
     double_variable: double_variable,
-    custom_variables: JSON.generate(FeatureRolloutData['custom_variables']),
+    custom_variables: JSON.generate(FeatureTestData['options']['custom_variables']),
     settings_file: $vwo_client_instance.get_settings
   }
 end
@@ -184,7 +183,7 @@ end
 get '/push' do
   user_id = params['userId'] || USERS.sample
   result = $vwo_client_instance.push(PushData['tag_key'], PushData['tag_value'], user_id)
-  
+
   erb :push, locals: {
     user_id: user_id,
     tag_key: PushData['tag_key'],
