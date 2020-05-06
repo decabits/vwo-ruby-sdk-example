@@ -123,7 +123,7 @@ get '/ab' do
   user_id = params['userId'] || USERS.sample
   variation_name = $vwo_client_instance_user_storage.activate(AbCampaignData['campaign_key'], user_id, AbCampaignData['options'])
   is_part_of_campaign = !variation_name.nil?
-  $vwo_client_instance_user_storage.track(AbCampaignData['campaign_key'], user_id, AbCampaignData['campaign_goal_identifier'], { revenue_value: AbCampaignData['revenue_value'] })
+  $vwo_client_instance_user_storage.track(AbCampaignData['campaign_key'], user_id, AbCampaignData['campaign_goal_identifier'], AbCampaignData['options'])
 
   erb :ab, locals: {
     user_id: user_id,
