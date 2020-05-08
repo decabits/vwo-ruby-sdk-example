@@ -33,7 +33,7 @@ PLATFORMS
 DEPENDENCIES
   haml (~> 5.1.2)
   sinatra (~> 2.0.7)
-  vwo-sdk (~> 1.3.0)
+  vwo-sdk
 
 BUNDLED WITH
    2.1.4
