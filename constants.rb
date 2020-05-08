@@ -1,5 +1,5 @@
 AbCampaignData = {
-  'campaign_key' => 'phpab3',
+  'campaign_key' => '',
   'campaign_goal_identifier' => 'custom',
   'user_id' => nil,
   'revenue_value' => 10,
@@ -7,7 +7,7 @@ AbCampaignData = {
 }
 
 FeatureRolloutData =  {
-  'campaign_key' => 'php1',
+  'campaign_key' => '',
   'user_id' => nil,
   'options' => { 'custom_variables' => {}, 'variation_targeting_variables' => { 'abcd' => 1 }}
   # custom_variables => Optional param, used for pre-segmentation
@@ -15,7 +15,7 @@ FeatureRolloutData =  {
 }
 
 FeatureTestData = {
-  'campaign_key' => 'php4',
+  'campaign_key' => '',
   'campaign_goal_identifier' => 'custom',
   'user_id' => nil,
   # custom_variables => Optional param, used for pre-segmentation
